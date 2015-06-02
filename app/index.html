@@ -15,19 +15,35 @@
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body ng-controller="personsController">
+  <div>
+    <div class="col-xs-11"></div>
+    <button class="btn btn-info col-xs-1" ng-click="logout()">Logout</button>
+  </div>
   <div class="container">
     <h1 class="title">WatchedIt!</h1>
   </div>
-  <div class="container" ng-repeat="person in persons">
+  <div class="container" ng-show="!authenticated">
+    <div>
+      <form id="login">
+        <input type="text" ng-model="user" class="form-control" style="width: 300px;" placeholder="Username"/>
+        <p></p>
+        <input type="password" ng-model="passwd" class="form-control" style="width: 300px;" placeholder="Password"/>
+        <p></p>
+        <button type="submit" ng-click="logIn(user, passwd)" class="btn btn-success">Log In!</button>
+        <h3 ng-show="hasError" class="alert-danger form-control" style="width: 300px;">Login incorrect...</h3>
+      </form>
+    </div>
+  </div>
+  <div class="container" ng-show="authenticated">
     <div class="navbar navbar-default">
-      <h3 class="text-center col-xs-3" ng-click="clickPerson(person, $event)">{{person.firstName}}</h3>
-      <h3 class="text-center col-xs-3" ng-click="clickPerson(person, $event)">{{person.lastName}}</h3>
+      <h3 class="text-center col-xs-3">{{person.firstName}}</h3>
+      <h3 class="text-center col-xs-3">{{person.lastName}}</h3>
       <form class="navbar-form navbar-left pull-right form-inline col-lg-6">
         <input type="text" ng-model="movieTitle" class="form-control" placeholder="Search..."/>
         <button type="submit" ng-click="addMovieForUser(person, movieTitle)" class="btn btn-success">Add!</button>
       </form>
     </div>
-    <table class="table table-striped" ng-show="{{person.firstName + person.personId}}">
+    <table class="table table-striped">
       <tbody>
         <tr ng-repeat="movie in person.seenMovies">
           <td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{trustSrc(movie.Poster)}}"/></td>
@@ -58,3 +74,31 @@
   <script src="components/version/interpolate-filter.js"></script>
 </body>
 </html>
+
+<!--<div class="container" ng-repeat="person in persons" ng-show="authenticated">-->
+  <!--<div class="navbar navbar-default">-->
+    <!--<h3 class="text-center col-xs-3" ng-click="clickPerson(person, $event)">{{person.firstName}}</h3>-->
+    <!--<h3 class="text-center col-xs-3" ng-click="clickPerson(person, $event)">{{person.lastName}}</h3>-->
+    <!--<form class="navbar-form navbar-left pull-right form-inline col-lg-6">-->
+      <!--<input type="text" ng-model="movieTitle" class="form-control" placeholder="Search..."/>-->
+      <!--<button type="submit" ng-click="addMovieForUser(person, movieTitle)" class="btn btn-success">Add!</button>-->
+    <!--</form>-->
+  <!--</div>-->
+  <!--<table class="table table-striped" ng-show="{{person.firstName + person.personId}}">-->
+    <!--<tbody>-->
+    <!--<tr ng-repeat="movie in person.seenMovies">-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{trustSrc(movie.Poster)}}"/></td>-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;">{{movie.Title}}</td>-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;">{{movie.Year}}</td>-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;">{{movie.Runtime}}</td>-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;">{{movie.Genre}}</td>-->
+      <!--<td class="col-sm-2" style="vertical-align: middle;">{{movie.Director}}</td>-->
+      <!--<td class="col-sm-3" style="vertical-align: middle;">{{movie.Actors}}</td>-->
+      <!--<td class="col-lg-push-12" style="vertical-align: middle;">{{movie.imdbRating}}</td>-->
+      <!--<td class="col-sm-1" style="vertical-align: middle;">-->
+        <!--<button ng-click="deleteMovieForUser(person, movie)" class="btn btn-danger">Delete!</button>-->
+      <!--</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+<!--</div>-->

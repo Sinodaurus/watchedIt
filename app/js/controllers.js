@@ -1,6 +1,8 @@
 angular.module('watcher.controllers', []).
-controller('personsController', function($scope, $http, watchRestService, deleteMovieForUserService, addMovieSeenForUserService, $sce) {
+controller('personsController', function($scope, $http, watchRestService, getUserByUserName, deleteMovieForUserService, addMovieSeenForUserService, authenticateUser, $sce) {
     $scope.nameFilter = null;
+        $scope.authenticated = false;
+        $scope.hasError = false;
     var $jq = jQuery.noConflict();
 
     watchRestService.query(function(data) {
@@ -70,4 +72,32 @@ controller('personsController', function($scope, $http, watchRestService, delete
     $scope.trustSrc = function(src) {
       return $sce.trustAsResourceUrl(src);
     }
+        $scope.getCreds = function(userName, password){
+            return $http({
+                method: 'GET',
+                url:'http://localhost:8080/auth/' + userName,
+                headers: {'Authorization':'Basic '+ btoa(userName + ":" + password)}
+            });
+        }
+
+        $scope.logIn = function(userName, password) {
+            $scope.getCreds(userName, password).success(function(response) {
+                status = response;
+                if(status === "authentified") {
+                    $scope.authenticated = true;
+                    $scope.person = getUserByUserName.get({userName: userName}, function(data) {
+                        return data;
+                    });
+                } else {
+                    $scope.authenticated = false;
+                }
+            });
+            $scope.hasError = true;
+        }
+
+        $scope.logout = function() {
+            $jq("#login")[0].reset();
+            $scope.hasError = false;
+            $scope.authenticated = false;
+        }
 });
