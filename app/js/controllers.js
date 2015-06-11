@@ -1,16 +1,16 @@
 angular.module('watcher.controllers', []).
-controller('personsController', function($scope, $http, watchRestService, getUserByUserName, deleteMovieForUserService, addMovieSeenForUserService, authenticateUser, $sce) {
+controller('personsController', function($scope, $http, personById, personByUserName, deleteMovieForUser, addMovieSeenForUser, authenticateUser, $sce) {
     $scope.nameFilter = null;
         $scope.authenticated = false;
         $scope.hasError = false;
     var $jq = jQuery.noConflict();
 
-    watchRestService.query(function(data) {
-      $scope.persons = data;
-    });
+    // personById.query(function(data) {
+    //   $scope.persons = data;
+    // });
 
     $scope.deleteMovieForUser = function(person, movie) {
-      deleteMovieForUserService.delete({personId: person.personId, movieId: movie.movieId}, function(data) {
+      deleteMovieForUser.delete({personId: person.personId, movieId: movie.movieId}, function(data) {
           return data;
       });
       var index = person.seenMovies.indexOf(movie);
@@ -26,6 +26,13 @@ controller('personsController', function($scope, $http, watchRestService, getUse
       });
     }
 
+    $scope.searchImdbMovie = function(movieTitle) {
+        return $http({
+          method: 'GET',
+          url: 'http://www.omdbapi.com/?s='+movieTitle
+      });
+    }
+
     $scope.addMovieForUser = function(person, movieTitle) {
       $scope.personSeenMovie = person;
       $scope.getImdbMovie(movieTitle).success(function(response) {
@@ -38,7 +45,7 @@ controller('personsController', function($scope, $http, watchRestService, getUse
     }
 
     $scope.addMovieToPerson = function() {
-      addMovieSeenForUserService.get({personId: $scope.personSeenMovie.personId, movieId: $scope.movieSeenByPerson.movieId}, function(data) {
+      addMovieSeenForUser.get({personId: $scope.personSeenMovie.personId, movieId: $scope.movieSeenByPerson.movieId}, function(data) {
         return data;
       });
     }
@@ -72,32 +79,32 @@ controller('personsController', function($scope, $http, watchRestService, getUse
     $scope.trustSrc = function(src) {
       return $sce.trustAsResourceUrl(src);
     }
-        $scope.getCreds = function(userName, password){
-            return $http({
-                method: 'GET',
-                url:'http://localhost:8080/auth/' + userName,
-                headers: {'Authorization':'Basic '+ btoa(userName + ":" + password)}
-            });
-        }
 
-        $scope.logIn = function(userName, password) {
-            $scope.getCreds(userName, password).success(function(response) {
-                status = response;
-                if(status === "authentified") {
-                    $scope.authenticated = true;
-                    $scope.person = getUserByUserName.get({userName: userName}, function(data) {
-                        return data;
-                    });
-                } else {
-                    $scope.authenticated = false;
-                }
-            });
-            $scope.hasError = true;
-        }
+    $scope.getCreds = function(userName, password){
+        return $http({
+            method: 'GET',
+            url:'http://localhost:8080/auth/' + userName,
+            headers: {'Authorization':'Basic '+ btoa(userName + ":" + password)}
+        });
+    }
 
-        $scope.logout = function() {
-            $jq("#login")[0].reset();
-            $scope.hasError = false;
-            $scope.authenticated = false;
-        }
+    $scope.logIn = function(userName, password) {
+        $scope.getCreds(userName, password).success(function(response) {
+            if(response["status"] === "authentified") {
+                $scope.authenticated = true;
+                $scope.person = personByUserName.get({userName: userName}, function(data) {
+                    return data;
+                });
+            } else {
+                $scope.authenticated = false;
+            }
+        });
+        $scope.hasError = true;
+    }
+
+    $scope.logout = function() {
+        $jq("#login")[0].reset();
+        $scope.hasError = false;
+        $scope.authenticated = false;
+    }
 });

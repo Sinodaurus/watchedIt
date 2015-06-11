@@ -1,15 +1,16 @@
 angular.module('watcher.services', ['ngResource']).
-factory('watchRestService', function($resource) {
-  return $resource('http://localhost:8080/person/:id');
+factory('personById', function($resource) {
+  return $resource('http://localhost:8080/persons/person/:id');
 }).
-    factory('getUserByUserName', function($resource) {
-      return $resource('http://localhost:8080/get/:userName');
-    }).
-factory('deleteMovieForUserService', function($resource) {
-  return $resource('http://localhost:8080/person/:personId/deleteMovie/:movieId');
+factory('personByUserName', function($resource) {
+  return $resource('http://localhost:8080/persons/user/:userName');
 }).
-factory('addMovieSeenForUserService', function($resource) {
-  return $resource('http://localhost:8080/person/:personId/watchedMovie/:movieId');
-}).factory('authenticateUser', function($resource) {
+factory('deleteMovieForUser', function($resource) {
+  return $resource('http://localhost:8080/persons/person/:personId/deleteMovie/:movieId');
+}).
+factory('addMovieSeenForUser', function($resource) {
+  return $resource('http://localhost:8080/persons/person/:personId/watchedMovie/:movieId');
+})
+.factory('authenticateUser', function($resource) {
   return $resource('http://localhost:8080/auth/:username');
 });
