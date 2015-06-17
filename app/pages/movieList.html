@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="navbar navbar-default">
+    <h3 class="text-center col-xs-3">{{person.firstName}}</h3>
+    <h3 class="text-center col-xs-3">{{person.lastName}}</h3>
+    <form class="navbar-form navbar-left pull-right form-inline col-lg-6">
+      <input type="text" ng-model="movieTitle" class="form-control" placeholder="Search..."/>
+      <button type="submit" ng-click="searchMovie(movieTitle)" class="btn btn-info">Search!</button>
+    </form>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <tbody>
+    <tr ng-repeat="movie in person.seenMovies">
+      <td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{trustSrc(movie.Poster)}}"/></td>
+      <td class="col-sm-1" style="vertical-align: middle;">{{movie.Title}}</td>
+      <td class="col-sm-1" style="vertical-align: middle;">{{movie.Year}}</td>
+      <td class="col-sm-1" style="vertical-align: middle;">{{movie.Runtime}}</td>
+      <td class="col-sm-1" style="vertical-align: middle;">{{movie.Genre}}</td>
+      <td class="col-sm-2" style="vertical-align: middle;">{{movie.Director}}</td>
+      <td class="col-sm-3" style="vertical-align: middle;">{{movie.Actors}}</td>
+      <td class="col-lg-push-12" style="vertical-align: middle;">{{movie.imdbRating}}</td>
+      <td class="col-sm-1" style="vertical-align: middle;">
+        <button ng-click="deleteMovieForUser(person, movie)" class="btn btn-danger">Delete!</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,12 @@
+<table class="table table-striped">
+  <tbody>
+    <tr ng-repeat="movie in searchMovies">
+      <td class="col-sm-6" style="vertical-align: middle;">{{movie.Title}}</td>
+      <td class="col-sm-2" style="vertical-align: middle;">{{movie.Year}}</td>
+      <td class="col-lg-push-12" style="vertical-align: middle;">{{movie.imdbRating}}</td>
+      <td class="col-sm-1" style="vertical-align: middle;">
+        <button ng-click="deleteMovieForUser(person, movie)" class="btn btn-success">Add!</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
