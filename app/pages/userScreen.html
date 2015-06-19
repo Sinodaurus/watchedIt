@@ -4,16 +4,18 @@
     <h3 class="text-center col-xs-3">{{person.lastName}}</h3>
     <form class="navbar-form navbar-left pull-right form-inline col-lg-6">
       <input type="text" ng-model="movieTitle" class="form-control" placeholder="Search..."/>
-      <button type="submit" ng-click="searchMovie(movieTitle)" class="btn btn-info">Search!</button>
     </form>
   </div>
+  <form>
+    <button type="submit" ng-click="searchMovie(movieTitle)" class="col-lg-12 btn btn-success">Search!</button>
+  </form>
 </div>
 
-<div>
+<div class="container">
   <table class="table table-striped">
     <tbody>
-      <tr ng-repeat="movie in seenMovies">
-        <td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{trustSrc(movie.Poster)}}"/></td>
+      <tr ng-repeat="movie in seenMovies | filter: movieTitle | orderBy: Title">
+        <td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{movie.Poster}}"/></td>
         <td class="col-sm-1" style="vertical-align: middle;">{{movie.Title}}</td>
         <td class="col-sm-1" style="vertical-align: middle;">{{movie.Year}}</td>
         <td class="col-sm-1" style="vertical-align: middle;">{{movie.Runtime}}</td>

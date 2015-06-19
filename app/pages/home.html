@@ -1,8 +1,6 @@
-<h1>Greeting</h1>
-<div ng-controller="homeController" ng-show="authenticated">
-<p>The ID is {{greeting.id}}</p>
-<p>The content is {{greeting.content}}</p>
-</div>
-<div  ng-show="!authenticated">
-<p>Login to see your greeting</p>
+<div class="container">
+  <h1>Greetings</h1>
+  <div ng-controller="homeController">
+    <button class="btn btn-info col-md-1" ng-click="login()">Login</button>
+  </div>
 </div>
