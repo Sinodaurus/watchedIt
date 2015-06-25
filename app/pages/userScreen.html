@@ -1,32 +1,34 @@
-<div class="container">
-  <div class="navbar navbar-default">
-    <h3 class="text-center col-xs-3">{{person.firstName}}</h3>
-    <h3 class="text-center col-xs-3">{{person.lastName}}</h3>
-    <form class="navbar-form navbar-left pull-right form-inline col-lg-6">
-      <input type="text" ng-model="movieTitle" class="form-control" placeholder="Search..."/>
-    </form>
-  </div>
-  <form>
-    <button type="submit" ng-click="searchMovie(movieTitle)" class="col-lg-12 btn btn-success">Search!</button>
-  </form>
-</div>
+<!-- <div flex layout="column" class="md-whiteframe-z2"> -->
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h3>{{person.firstName}}</h3>
+      <h3>{{person.lastName}}</h3>
+      <span flex></span
+      <md-input-container md-no-float>
+        <input ng-model="movieTitle" type="text" placeholder="Search...">
+      </md-input-container>
 
-<div class="container">
-  <table class="table table-striped">
-    <tbody>
-      <tr ng-repeat="movie in seenMovies | filter: movieTitle | orderBy: Title">
-        <td class="col-sm-1" style="vertical-align: middle;"><img height=100 ng-src="{{movie.Poster}}"/></td>
-        <td class="col-sm-1" style="vertical-align: middle;">{{movie.Title}}</td>
-        <td class="col-sm-1" style="vertical-align: middle;">{{movie.Year}}</td>
-        <td class="col-sm-1" style="vertical-align: middle;">{{movie.Runtime}}</td>
-        <td class="col-sm-1" style="vertical-align: middle;">{{movie.Genre}}</td>
-        <td class="col-sm-2" style="vertical-align: middle;">{{movie.Director}}</td>
-        <td class="col-sm-3" style="vertical-align: middle;">{{movie.Actors}}</td>
-        <td class="col-lg-push-12" style="vertical-align: middle;">{{movie.imdbRating}}</td>
-        <td class="col-sm-1" style="vertical-align: middle;">
-          <button ng-click="deleteMovieForUser(person, movie)" class="btn btn-danger">Delete!</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    </div>
+  </md-toolbar>
+
+  <md-list>
+    <md-list-item ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
+      <md-card>
+        <!-- <img ng-src="{{movie.Poster}}" class="md-card-image" alt="Washed Out"/> -->
+        <md-card-content>
+          <h2>{{movie.Title}}</h2>
+          <p>{{movie.Plot}}</p>
+        </md-card-content>
+      </md-card>
+    </md-list-item>
+  </md-list>
+
+  <!-- <md-list>
+    <md-list-item ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
+      <md-button>
+        <img height=100 ng-src="{{movie.Poster}}"/>
+        {{movie.Title}}
+      </md-button>
+    </md-list-item>
+  </md-list> -->
 </div>

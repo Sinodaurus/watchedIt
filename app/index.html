@@ -9,19 +9,66 @@
   <title>Watched It!</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
   <link href="/watchedItLogo.ico" rel="icon" type="image/x-icon" />
 </head>
-<body>
-  <div>
+<body layout="row" ng-controller="MainController">
+  <!-- <div>
     <div class="col-xs-11"></div>
     <button class="btn btn-info col-xs-1" onclick="window.location.href='/'">Logout</button>
   </div>
   <div class="container">
     <h1 class="title">WatchedIt!</h1>
+  </div> -->
+  <!-- //--------------- -->
+  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')">
+
+    <md-toolbar class="md-whiteframe-z1">
+      <h1>Menu</h1>
+    </md-toolbar>
+
+    <md-list>
+      <md-list-item ng-repeat="option in pageOptions">
+          <md-button ng-href="{{option.location}}" ng-class="{'selected' : option === pageOptions.selected}">
+            <!-- <md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon> -->
+            {{option.name}}
+          </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button ng-click="logout()">
+          <!-- <md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon> -->
+          Logout
+        </md-button>
+      </md-list-item>
+    </md-list>
+
+  </md-sidenav>
+
+  <div flex layout="column" role="main" class="md-whiteframe-z2">
+
+    <md-toolbar layout="row">
+      <md-button id="custom-menu" class="menu" ng-click="toggleList()" aria-label="Show User List">
+        <md-icon md-svg-icon="menu" ></md-icon>
+      </md-button>
+      <span flex="10"></span>
+      <md-header>
+        <h1 class="title">WatchedIt!</h1>
+      </md-header>
+    </md-toolbar>
+
+    <!-- <md-content> -->
+        <!-- <h2>This is a movie!</h2>
+        <p>and some info about it.</p> -->
+
+      <md-content ng-view=""/>
+    <!-- </md-content> -->
+
   </div>
 
-  <div ng-view></div>
+  <!-- <div ng-view></div> -->
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>

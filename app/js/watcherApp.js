@@ -12,9 +12,9 @@ var checkIfAuthenticated = function($rootScope, $http, $location, personService)
   });
 }
 
-angular.module('watcherApp', ['watcher.services', 'ngRoute'])
+angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
 
-.config(function ($routeProvider) {
+.config(function ($routeProvider, $mdIconProvider, $mdThemingProvider) {
   $routeProvider
 
     .when('/', {
@@ -38,6 +38,19 @@ angular.module('watcherApp', ['watcher.services', 'ngRoute'])
         controller : 'loginController'
     })
     .otherwise('/');
+
+  $mdIconProvider
+      .defaultIconSet("./assets/svg/avatars.svg", 128)
+      .icon("menu"       , "./assets/svg/menu.svg"        , 24)
+      .icon("share"      , "./assets/svg/share.svg"       , 24)
+      .icon("google_plus", "./assets/svg/google_plus.svg" , 512)
+      .icon("hangouts"   , "./assets/svg/hangouts.svg"    , 512)
+      .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)
+      .icon("phone"      , "./assets/svg/phone.svg"       , 512);
+
+  $mdThemingProvider.theme('default')
+      .primaryPalette('indigo')
+      .accentPalette('purple');
 })
 
 .controller('homeController', function($scope, $location) {
@@ -93,9 +106,30 @@ angular.module('watcherApp', ['watcher.services', 'ngRoute'])
   }
 })
 
-.controller('userScreenController', function($rootScope, $scope, $http, $location, personService) {
-  // checkIfAuthenticated($rootScope, $http, $location, personService);
+.controller('movieListController', function($http, $scope, $rootScope, $location, personService) {
+  checkIfAuthenticated($rootScope, $http, $location, personService);
+})
 
+.controller('searchMoviesController', function() {
+
+})
+
+.controller('MainController', function($rootScope, $mdSidenav, $scope, $location) {
+  $scope.pageOptions = [
+    {name:"Movies",location:"/#/userScreen"},
+    {name:"Graphs",location:"#"}];
+
+  $scope.toggleList = function () {
+    $mdSidenav('left').toggle();
+  }
+
+  $scope.logout = function() {
+    $rootScope.person = {};
+    $location.path("/");
+  }
+})
+
+.controller('userScreenController', function($rootScope, $mdSidenav, $scope, $http, $location, personService) {
   var req = {
     method: 'GET',
     url: 'http://localhost:8080/auth/getToken'
@@ -120,12 +154,9 @@ angular.module('watcherApp', ['watcher.services', 'ngRoute'])
     }).error(function() {
       $location.path("/login");
     });
-})
 
-.controller('movieListController', function($http, $scope, $rootScope, $location, personService) {
-  checkIfAuthenticated($rootScope, $http, $location, personService);
-})
-
-.controller('searchMoviesController', function() {
-
+  // $rootScope.person = {"personId":20,"firstName":"Sven","lastName":"Schittecatte","seenMovies":[{"seenMovieId":17,"imdbMovieId":"tt0067809"},{"seenMovieId":13,"imdbMovieId":"tt0963178"},{"seenMovieId":7,"imdbMovieId":"tt2788710"},{"seenMovieId":6,"imdbMovieId":"tt0110148"},
+  // {"seenMovieId":12,"imdbMovieId":"tt0373926"},{"seenMovieId":18,"imdbMovieId":"tt0995718"},{"seenMovieId":14,"imdbMovieId":"tt0165832"},{"seenMovieId":20,"imdbMovieId":"tt0107566"},{"seenMovieId":11,"imdbMovieId":"tt1839578"},{"seenMovieId":5,"imdbMovieId":"tt0816692"},
+  // {"seenMovieId":8,"imdbMovieId":"tt0118655"},{"seenMovieId":23,"imdbMovieId":"tt0249853"},{"seenMovieId":15,"imdbMovieId":"tt0085859"},{"seenMovieId":10,"imdbMovieId":"tt0172493"},{"seenMovieId":19,"imdbMovieId":"tt0387357"},{"seenMovieId":9,"imdbMovieId":"tt2234155"},
+  // {"seenMovieId":22,"imdbMovieId":"tt0097769"},{"seenMovieId":21,"imdbMovieId":"tt0472126"},{"seenMovieId":24,"imdbMovieId":"tt0293357"},{"seenMovieId":16,"imdbMovieId":"tt0065051"}]};
 });

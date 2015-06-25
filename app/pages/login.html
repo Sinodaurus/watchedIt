@@ -1,4 +1,4 @@
-<div ng-controller="loginController" class="container">
+<!-- <div ng-controller="loginController" class="container">
   <div>
     <form id="login">
       <input type="text" ng-model="credentials.userName" class="form-control" style="width: 300px;" placeholder="Username"/>
@@ -9,4 +9,13 @@
       <h3 ng-show="hasError" class="alert-danger form-control" style="width: 300px;">Login incorrect...</h3>
     </form>
   </div>
-</div>
+</div> -->
+
+<md-input-container>
+  <label>Username</label>
+  <input type="text" ng-model="credentials.userName">
+</md-input-container>
+<md-input-container>
+  <label>Description</label>
+  <textarea ng-model="user.description"></textarea>
+</md-input-container>
