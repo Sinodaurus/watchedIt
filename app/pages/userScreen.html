@@ -1,34 +1,50 @@
-<!-- <div flex layout="column" class="md-whiteframe-z2"> -->
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h3>{{person.firstName}}</h3>
-      <h3>{{person.lastName}}</h3>
-      <span flex></span
-      <md-input-container md-no-float>
-        <input ng-model="movieTitle" type="text" placeholder="Search...">
-      </md-input-container>
+<!-- <md-toolbar>
+-    <div class="md-toolbar-tools">
+-      <h3>{{person.firstName}}</h3>
+-      <h3>{{person.lastName}}</h3>
+-      <span flex></span
+-      <md-input-container md-no-float>
+-        <input ng-model="movieTitle" type="text" placeholder="Search...">
+-      </md-input-container>
+-
+-    </div>
+-  </md-toolbar> -->
 
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h3 class="md-display-1">{{person.firstName}} {{person.lastName}}</h3>
+  <!-- <div layout="row"> -->
+    <span flex></span>
     </div>
-  </md-toolbar>
+    </md-toolbar>
+    <md-autocomplete
+          md-search-text="movieTitle"
+          md-items="movie in queryMovies(movieTitle)"
+          md-search-text-change="null"
+          md-item-text="movie.Title"
+          md-min-length="0"
+          placeholder="Search">
 
-  <md-list>
-    <md-list-item ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
-      <md-card>
-        <!-- <img ng-src="{{movie.Poster}}" class="md-card-image" alt="Washed Out"/> -->
-        <md-card-content>
-          <h2>{{movie.Title}}</h2>
-          <p>{{movie.Plot}}</p>
-        </md-card-content>
-      </md-card>
-    </md-list-item>
-  </md-list>
+    <md-item-template>
+      <span md-highlight-text="movie">{{movie.Title}}</span>
+    </md-item-template>
+  </md-autocomplete>
 
-  <!-- <md-list>
-    <md-list-item ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
-      <md-button>
-        <img height=100 ng-src="{{movie.Poster}}"/>
-        {{movie.Title}}
-      </md-button>
-    </md-list-item>
-  </md-list> -->
-</div>
+
+  <md-content>
+    <md-list>
+      <md-list-item ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
+        <md-card>
+          <md-card-content layout="row">
+            <div flex="20">
+              <img height=100 src="{{movie.Poster}}"/>
+            </div>
+            <div flex layout="column">
+              <h2>{{movie.Title}}</h2>
+              <p>{{movie.Plot}}</p>
+            </div>
+          </md-card-content>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </md-content>

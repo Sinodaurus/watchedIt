@@ -12,7 +12,7 @@ var checkIfAuthenticated = function($rootScope, $http, $location, personService)
   });
 }
 
-angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
+angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute', 'ngMessages', 'dcbClearInput'])
 
 .config(function ($routeProvider, $mdIconProvider, $mdThemingProvider) {
   $routeProvider
@@ -66,8 +66,6 @@ angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
 
 .controller('loginController', function($rootScope, $scope, $http, $location) {
 
-  var $jq = jQuery.noConflict();
-  $jq("#login")[0][0].focus();
   $scope.credentials = {};
 
   var authenticate = function(callback) {
@@ -116,10 +114,16 @@ angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
 
 .controller('MainController', function($rootScope, $mdSidenav, $scope, $location) {
   $scope.pageOptions = [
-    {name:"Movies",location:"/#/userScreen"},
+    {name:"Movies",location:"/userScreen"},
     {name:"Graphs",location:"#"}];
 
   $scope.toggleList = function () {
+    $mdSidenav('left').toggle();
+  }
+
+  $scope.clickOption = function(option) {
+    self.selected = angular.isNumber(option) ? $scope.pageOptions[option] : option;
+    $location.path(option.location);
     $mdSidenav('left').toggle();
   }
 
@@ -130,6 +134,7 @@ angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
 })
 
 .controller('userScreenController', function($rootScope, $mdSidenav, $scope, $http, $location, personService) {
+
   var req = {
     method: 'GET',
     url: 'http://localhost:8080/auth/getToken'
@@ -155,6 +160,16 @@ angular.module('watcherApp', ['ngMaterial', 'watcher.services', 'ngRoute'])
       $location.path("/login");
     });
 
+    $scope.queryMovies = function(query) {
+      return results = query ? $scope.seenMovies.filter( createFilterFor(query) ) : $scope.seenMovies;
+    }
+
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+      return function filterFn(movie) {
+        return (movie.Title.indexOf(lowercaseQuery) === 0);
+      };
+    }
   // $rootScope.person = {"personId":20,"firstName":"Sven","lastName":"Schittecatte","seenMovies":[{"seenMovieId":17,"imdbMovieId":"tt0067809"},{"seenMovieId":13,"imdbMovieId":"tt0963178"},{"seenMovieId":7,"imdbMovieId":"tt2788710"},{"seenMovieId":6,"imdbMovieId":"tt0110148"},
   // {"seenMovieId":12,"imdbMovieId":"tt0373926"},{"seenMovieId":18,"imdbMovieId":"tt0995718"},{"seenMovieId":14,"imdbMovieId":"tt0165832"},{"seenMovieId":20,"imdbMovieId":"tt0107566"},{"seenMovieId":11,"imdbMovieId":"tt1839578"},{"seenMovieId":5,"imdbMovieId":"tt0816692"},
   // {"seenMovieId":8,"imdbMovieId":"tt0118655"},{"seenMovieId":23,"imdbMovieId":"tt0249853"},{"seenMovieId":15,"imdbMovieId":"tt0085859"},{"seenMovieId":10,"imdbMovieId":"tt0172493"},{"seenMovieId":19,"imdbMovieId":"tt0387357"},{"seenMovieId":9,"imdbMovieId":"tt2234155"},

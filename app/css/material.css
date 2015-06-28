@@ -135,8 +135,8 @@ span.name {
 }
 
 .title {
-  font-family: Airstream;
-  font-size: 5em;
+  font-family: 'airstreamregular';
+  font-size: 3em;
   /*text-shadow: 0 0 -10px #3498db;*/
   text-shadow: -1px -1px 0 #3498db,
   -1px -2px 0 #3498db,
@@ -218,4 +218,16 @@ span.name {
   4px 2px 0 #3498db,
   4px 3px 0 #3498db,
   4px 4px 0 #3498db;
+}
+
+@font-face {
+    font-family: 'airstreamregular';
+    src: url('css/web_fonts/Airstream-webfont.eot');
+    src: url('css/web_fonts/Airstream-webfont.eot?#iefix') format('embedded-opentype'),
+         url('css/web_fonts/Airstream-webfont.woff') format('woff'),
+         url('css/web_fonts/Airstream-webfont.ttf') format('truetype'),
+         url('css/web_fonts/Airstream-webfont.svg#airstreamregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }

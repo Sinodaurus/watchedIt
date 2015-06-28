@@ -1,21 +1,24 @@
-<!-- <div ng-controller="loginController" class="container">
-  <div>
-    <form id="login">
-      <input type="text" ng-model="credentials.userName" class="form-control" style="width: 300px;" placeholder="Username"/>
-      <p></p>
-      <input type="password" ng-model="credentials.password" class="form-control" style="width: 300px;" placeholder="Password"/>
-      <p></p>
-      <button type="submit" ng-click="logIn(user, passwd)" class="btn btn-success">Log In!</button>
-      <h3 ng-show="hasError" class="alert-danger form-control" style="width: 300px;">Login incorrect...</h3>
-    </form>
-  </div>
-</div> -->
-
-<md-input-container>
-  <label>Username</label>
-  <input type="text" ng-model="credentials.userName">
-</md-input-container>
-<md-input-container>
-  <label>Description</label>
-  <textarea ng-model="user.description"></textarea>
-</md-input-container>
+<div layout="row" layout-padding>
+  <div flex="20"></div>
+  <form flex="60" name="loginForm" class="md-whiteframe-z2">
+    <h3 class="md-display-1">Log in...</h3>
+    <md-input-container>
+      <label>Username</label>
+      <input required name="username" ng-model="credentials.userName">
+      <div ng-messages="loginForm.username.$error">
+        <div ng-message="required">This is required.</div>
+      </div>
+    </md-input-container>
+    <md-input-container>
+      <label>Password</label>
+      <input type="password" required name="password" ng-model="credentials.password">
+      <div ng-messages="loginForm.password.$error">
+        <div ng-message="required">This is required.</div>
+      </div>
+    </md-input-container>
+    <div layout="row">
+      <md-button flex type="submit" ng-click="logIn()" class="md-raised">Authenticate</md-button>
+    </div>
+  </form>
+  <div flex="20"></div>
+</div>
