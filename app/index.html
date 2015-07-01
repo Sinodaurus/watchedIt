@@ -15,46 +15,59 @@
 </head>
 <body layout="row" ng-controller="MainController">
 
-  <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
-                md-component-id="left"
-                md-is-locked-open="$mdMedia('gt-sm')">
+  <md-content flex>
+    <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+      <md-tab label="Movies">
+        <md-content ng-controller="userScreenController">
+          <md-list>
+            <md-subheader class="md-no-sticky">Movies</md-subheader>
+            <md-list-item class="md-2-line" ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
+              <img ng-src="{{movie.Poster}}" class="md-avatar" alt="X" />
+              <div class="md-list-item-text">
+                <h3>{{movie.Title}}</h3>
+                <p>{{movie.Genre}}</p>
+              </div>
+            </md-list-item>
+            <md-divider ></md-divider>
+          </md-list>
+        </md-content>
+      </md-tab>
 
-    <md-toolbar class="md-whiteframe-z1">
-      <h1>Menu</h1>
-    </md-toolbar>
+      <md-tab label="Login">
+        <md-content ng-controller="homeController">
+          <md-subheader>testing</md-subheader>
+          <md-button class="md-raised md-primary" ng-click="logout()">Log out</md-button>
+          <!-- <form name="loginForm" class="md-whiteframe-z2">
+            <h3 class="md-display-1">Log in...</h3>
+            <md-input-container>
+              <label>Username</label>
+              <input required name="username" ng-model="credentials.userName">
+              <div ng-messages="loginForm.username.$error">
+                <div ng-message="required">This is required.</div>
+              </div>
+            </md-input-container>
+            <md-input-container>
+              <label>Password</label>
+              <input type="password" required name="password" ng-model="credentials.password">
+              <div ng-messages="loginForm.password.$error">
+                <div ng-message="required">This is required.</div>
+              </div>
+            </md-input-container>
+            <div layout="row">
+              <md-button flex type="submit" ng-click="logIn()" class="md-raised">Authenticate</md-button>
+            </div>
+          </form> -->
+        </md-content>
+      </md-tab>
 
-    <md-list>
-      <md-list-item ng-repeat="option in pageOptions">
-          <md-button ng-click="clickOption(option)" ng-class="{'selected' : option === pageOptions.selected}">
-            <!-- <md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon> -->
-            {{option.name}}
-          </md-button>
-      </md-list-item>
-      <md-list-item>
-        <md-button ng-click="logout()">
-          <!-- <md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon> -->
-          Logout
-        </md-button>
-      </md-list-item>
-    </md-list>
+      <md-tab label="Testing">
+        <md-content ng-controller="loginController">
+          testing
 
-  </md-sidenav>
-
-  <div flex layout="column" role="main" class="md-whiteframe-z2">
-
-    <md-toolbar layout="row">
-      <md-button id="custom-menu" class="menu" hide-gt-sm ng-click="toggleList()" aria-label="Show User List">
-        <md-icon md-svg-icon="menu" ></md-icon>
-      </md-button>
-      <span flex="10"></span>
-      <md-header>
-        <h1 class="title">WatchedIt!</h1>
-      </md-header>
-    </md-toolbar>
-
-    <md-content ng-view=""/>
-
-  </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
