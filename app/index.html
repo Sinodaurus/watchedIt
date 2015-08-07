@@ -10,18 +10,48 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css">
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
   <link href="/watchedItLogo.ico" rel="icon" type="image/x-icon" />
 </head>
-<body layout="row" ng-controller="MainController">
+<body layout="column" ng-controller="MainController">
+  <md-content layout="row">
 
+  </md-content>
   <md-content flex>
+    <div layout="row">
+      <md-toolbar class="md-primary md-hue-2">
+        <div class="md-toolbar-tools">
+          <div layout="row" style="margin-left: auto;">
+            <h2 style="margin-top:auto; margin-bottom:auto;">{{person.firstName}} {{person.lastName}}</h2>
+            <md-button class="md-primary" ng-click="logout()">Log out</md-button>
+          </div>
+        </div>
+      </md-toolbar>
+    </div>
     <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
       <md-tab label="Movies">
         <md-content ng-controller="userScreenController">
           <md-list>
-            <md-subheader class="md-no-sticky">Movies</md-subheader>
-            <md-list-item class="md-2-line" ng-repeat="movie in seenMovies | filter:movieTitle | orderBy: 'Title'">
+            <div layout="row">
+              <md-subheader class="md-no-sticky">Movies</md-subheader>
+              <!-- <md-autocomplete
+                    md-search-text="movieTitle"
+                    md-items="movie in person.seenMovies"
+                    md-item-text="movie.Title"
+                    md-min-length="0"
+                    placeholder="Search"> -->
+              <span flex offset-md="66" offset-gt-md="66" offset-sm="33"></span>
+              <span flex>
+                <md-button aria-label="Add" style="min-width:40px; width:40px; text-align:left;" ng-click="addMovie()">
+                  <md-tooltip>
+                    Add movie
+                  </md-tooltip>
+                    <ng-md-icon icon="add_box" style="margin-left:-10px; margin-top:-26px; padding-top:0px;fill:white" size="48"></ng-md-icon>
+                </md-button>
+              </span>
+            </div>
+            <md-list-item class="md-2-line" ng-repeat="movie in person.seenMovies | filter:movieTitle | orderBy: 'Title'">
               <img ng-src="{{movie.Poster}}" class="md-avatar" alt="X" />
               <div class="md-list-item-text">
                 <h3>{{movie.Title}}</h3>
@@ -33,37 +63,67 @@
         </md-content>
       </md-tab>
 
-      <md-tab label="Login">
-        <md-content ng-controller="homeController">
-          <md-subheader>testing</md-subheader>
-          <md-button class="md-raised md-primary" ng-click="logout()">Log out</md-button>
-          <!-- <form name="loginForm" class="md-whiteframe-z2">
-            <h3 class="md-display-1">Log in...</h3>
+      <md-tab label="Add Movie">
+        <md-content ng-controller="searchController">
+          <md-subheader>Add movie</md-subheader>
+          <form>
             <md-input-container>
-              <label>Username</label>
-              <input required name="username" ng-model="credentials.userName">
-              <div ng-messages="loginForm.username.$error">
-                <div ng-message="required">This is required.</div>
-              </div>
+              <label>Title</label>
+              <input ng-model="movie.search">
             </md-input-container>
-            <md-input-container>
-              <label>Password</label>
-              <input type="password" required name="password" ng-model="credentials.password">
-              <div ng-messages="loginForm.password.$error">
-                <div ng-message="required">This is required.</div>
+            <md-button flex class="md-primary" ng-click="search()">Search!</md-button>
+          </form>
+          <md-list>
+            <md-list-item class="md-2-line" ng-repeat="movie in results.Search | orderBy: 'Title'">
+              <div class="md-list-item-text">
+                <div layout="row" style="width:400px;">
+                  <h3>{{movie.Title}}</h3>
+                  <ng-md-icon icon="info" ng-click="info(movie, $index)" style="fill: white; margin-left: auto; margin-right: 10px;"></ng-md-icon>
+                </div>
+                <p>{{movie.Year}}</p>
               </div>
-            </md-input-container>
-            <div layout="row">
-              <md-button flex type="submit" ng-click="logIn()" class="md-raised">Authenticate</md-button>
-            </div>
-          </form> -->
+              <md-list ng-show="info[$index]" ng-animate="'slide'">
+                <md-list-item class="md-3-line">
+                  <img ng-src="{{searchMovie.Poster}}" class="md-avatar" alt="X" />
+                  <h3>{{searchMovie.Title}}</h3>
+                  <h3>{{searchMovie.Actors}}</h3>
+                  <h3>{{searchMovie.Plot}}</h3>
+                </md-list-item>
+              </md-list>
+            </md-list-item>
+            <md-divider ></md-divider>
+          </md-list>
         </md-content>
       </md-tab>
 
       <md-tab label="Testing">
-        <md-content ng-controller="loginController">
-          testing
-
+        <md-content ng-controller="loginController2">
+            <md-content class="md-padding">
+              <form name="loginForm">
+                <md-subheader class="md-primary md-no-sticky">Log in...</md-subheader>
+                <md-input-container>
+                  <label>Username</label>
+                  <input required name="username" ng-model="credentials.userName">
+                  <div ng-messages="loginForm.username.$error">
+                    <div ng-message="required">This is required.</div>
+                  </div>
+                </md-input-container>
+                <md-input-container>
+                   <label>Password</label>
+                   <input type="password" required name="password" ng-model="credentials.password">
+                   <div ng-messages="loginForm.password.$error">
+                     <div ng-message="required">This is required.</div>
+                   </div>
+                 </md-input-container>
+                  <md-toolbar ng-show="hasError" class="md-warn">
+                   <span>Login incorrect...</span>
+                 </md-toolbar>
+                   <div layout="row">
+                      <md-button flex ng-click="logIn()" class="md-raised md-primary">Authenticate</md-button>
+                      <md-button flex ng-click="reset()" class="md-raised md-primary">Reset</md-button>
+                   </div>
+               </form>
+             </md-content>
         </md-content>
       </md-tab>
     </md-tabs>
@@ -76,6 +136,7 @@
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="components/angular.dcb-clear-input.js"></script>
   <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-material-icons/angular-material-icons.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="js/watcherApp.js"></script>
